@@ -1,0 +1,16 @@
+@import url(https://unpkg.com/@picocss/pico@latest/css/pico.min.css);
+
+table {
+  margin: 50px auto;
+  width: fit-content;
+}
+tr,
+td {
+  border: 1px solid #808080;
+}
+td {
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  background-color: #eeeeee;
+}
