@@ -225,11 +225,6 @@ function game() {
 function updateTurn() {
     let turns = document.querySelector("#turns");
     turns.innerHTML = parseInt(turns.textContent) + 1;
-/*     window.clearInterval(interval);
-    interval = setInterval(() => {
-        game();
-        updateTurn();
-    }, refresh); */
 }
 
 /**
@@ -238,6 +233,11 @@ function updateTurn() {
  */
 function refreshRate(range) {
     refresh = parseInt(range.value);
+    window.clearInterval(interval);
+    interval = setInterval(() => {
+        game();
+        updateTurn();
+    }, refresh);
 }
 
 /**
