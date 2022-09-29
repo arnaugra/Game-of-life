@@ -1,17 +1,26 @@
 const HEIGHT = 25;
 const TABLE = document.querySelector("table");
+const NEW_CELLS = new Array(24);
+let CELLS = [];
+let PAUSE = true;
+let interval;
+let refresh = 1100;
 
 /**
  * Build the board, too lazy to do it, this is faster
  */
 function board() {
     for (let col = 0; col < HEIGHT; col++) {
+        CELLS[col] = [];
+        NEW_CELLS[col] = new Array(24);
         tr = document.createElement("tr");
 
         for (let row = 0; row < HEIGHT; row++) {
+            CELLS[col][row] = "dead";
             td = document.createElement("td");
-            td.setAttribute("onclick", "cellStatus(this)");
+            td.setAttribute("onclick", "cellStatus(this);");
             td.setAttribute("class", "dead");
+            td.setAttribute("id", col + "_" + row);
             tr.append(td);
 
         }
@@ -25,15 +34,207 @@ function board() {
  * @param {HTMLTableCellElement} cell - Cell clicked 
  */
 function cellStatus(cell) {
-    if (cell.classList.contains("dead")) {
-        cell.classList.remove("dead");
+    let placeArray = cell.id.split("_");
+    cell.classList.remove("dead");
+    cell.classList.remove("alive");
+
+    if (CELLS[placeArray[0]][placeArray[1]] == "dead") {
         cell.classList.add("alive");
-        cell.style.backgroundColor = "#000000";
+        CELLS[placeArray[0]][placeArray[1]] = "alive";
+
     } else {
-        cell.classList.remove("alive");
         cell.classList.add("dead");
-        cell.style.backgroundColor = "#eeeeee";
+        CELLS[placeArray[0]][placeArray[1]] = "dead";
+
     }
+
+}
+
+/**
+ * Runs or stops the game progress
+ * @param {HTMLButtonElement} button 
+ */
+function gameStat(button) {
+    if (PAUSE) {
+        button.value = "Stop";
+        button.classList.add("secondary");
+        PAUSE = false;
+        interval = setInterval(() => {
+            game();
+            updateTurn();
+        }, refresh);
+    } else {
+        button.value = "Start";
+        button.classList.remove("secondary");
+        PAUSE = true;
+        window.clearInterval(interval);
+    }
+}
+
+let volta = 0;
+function game() {
+
+    let boardCells = document.querySelectorAll("td");
+    let newCells = JSON.parse(JSON.stringify(NEW_CELLS));
+
+    boardCells.forEach(cell => {
+
+        let neighbours = 0;
+
+        let id = cell.id.split("_");
+        let id1 = parseInt(id[0]);
+        let id2 = parseInt(id[1]);
+
+        if (cell.id == "0_0") {
+
+            if (CELLS[id1][id2 + 1] == "alive") neighbours++;
+
+            if (CELLS[id1 + 1][id2 + 1] == "alive") neighbours++;
+
+            if (CELLS[id1 + 1][id2] == "alive") neighbours++;
+
+        } else if (cell.id == "0_24") {
+
+            if (CELLS[id1][id2 - 1] == "alive") neighbours++;
+
+            if (CELLS[id1 + 1][id2 - 1] == "alive") neighbours++;
+
+            if (CELLS[id1 + 1][id2] == "alive") neighbours++;
+
+        } else if (cell.id == "24_24") {
+
+            if (CELLS[id1][id2 - 1] == "alive") neighbours++;
+
+            if (CELLS[id1 - 1][id2 - 1] == "alive") neighbours++;
+
+            if (CELLS[id1 - 1][id2] == "alive") neighbours++;
+
+        } else if (cell.id == "24_0") {
+
+            if (CELLS[id1 - 1][id2] == "alive") neighbours++;
+
+            if (CELLS[id1 - 1][id2 + 1] == "alive") neighbours++;
+
+            if (CELLS[id1][id2 + 1] == "alive") neighbours++;
+
+        } else if (id1 == "0") {
+
+            if (CELLS[id1][id2 - 1] == "alive") neighbours++;
+
+            if (CELLS[id1 + 1][id2 - 1] == "alive") neighbours++;
+
+            if (CELLS[id1 + 1][id2] == "alive") neighbours++;
+
+            if (CELLS[id1 + 1][id2 + 1] == "alive") neighbours++;
+
+            if (CELLS[id1][id2 + 1] == "alive") neighbours++;
+
+        } else if (id1 == "24") {
+
+            if (CELLS[id1][id2 - 1] == "alive") neighbours++;
+
+            if (CELLS[id1 - 1][id2 - 1] == "alive") neighbours++;
+
+            if (CELLS[id1 - 1][id2] == "alive") neighbours++;
+
+            if (CELLS[id1 - 1][id2 + 1] == "alive") neighbours++;
+
+            if (CELLS[id1][id2 + 1] == "alive") neighbours++;
+
+        } else if (id2 == "0") {
+
+            if (CELLS[id1 - 1][id2] == "alive") neighbours++;
+
+            if (CELLS[id1 - 1][id2 + 1] == "alive") neighbours++;
+
+            if (CELLS[id1][id2 + 1] == "alive") neighbours++;
+
+            if (CELLS[id1 + 1][id2 + 1] == "alive") neighbours++;
+
+            if (CELLS[id1 + 1][id2] == "alive") neighbours++;
+
+        } else if (id2 == "24") {
+
+            if (CELLS[id1 - 1][id2] == "alive") neighbours++;
+
+            if (CELLS[id1 - 1][id2 - 1] == "alive") neighbours++;
+
+            if (CELLS[id1][id2 - 1] == "alive") neighbours++;
+
+            if (CELLS[id1 + 1][id2 - 1] == "alive") neighbours++;
+
+            if (CELLS[id1 + 1][id2] == "alive") neighbours++;
+
+        } else {
+
+            if (CELLS[id1 - 1][id2 - 1] == "alive") neighbours++;
+
+            if (CELLS[id1 - 1][id2] == "alive") neighbours++;
+
+            if (CELLS[id1 - 1][id2 + 1] == "alive") neighbours++;
+
+            if (CELLS[id1][id2 - 1] == "alive") neighbours++;
+
+            if (CELLS[id1][id2 + 1] == "alive") neighbours++;
+
+            if (CELLS[id1 + 1][id2 - 1] == "alive") neighbours++;
+
+            if (CELLS[id1 + 1][id2] == "alive") neighbours++;
+
+            if (CELLS[id1 + 1][id2 + 1] == "alive") neighbours++;
+
+        }
+
+        if (cell.classList.contains("alive")) {
+
+            if (neighbours < 2 || neighbours > 3) newCells[id1][id2] = "dead";
+
+            else if (neighbours >= 2 && neighbours <= 3) newCells[id1][id2] = "alive";//just stay alive
+
+            else newCells[id1][id2] = "alive";
+
+        } else if (cell.classList.contains("dead")) {
+
+            if (neighbours == 3) newCells[id1][id2] = "alive";
+
+            else newCells[id1][id2] = "dead";
+
+        }
+
+    });
+
+
+    boardCells.forEach(cell => {
+
+        let id = cell.id.split("_");
+        let id1 = parseInt(id[0]);
+        let id2 = parseInt(id[1]);
+
+        if (cell.classList.contains("alive") && newCells[id1][id2] == "dead" || cell.classList.contains("dead") && newCells[id1][id2] == "alive") cellStatus(cell);
+    });
+
+    CELLS = JSON.parse(JSON.stringify(newCells));
+}
+
+/**
+ * Every turn updates the counter
+ */
+function updateTurn() {
+    let turns = document.querySelector("#turns");
+    turns.innerHTML = parseInt(turns.textContent) + 1;
+/*     window.clearInterval(interval);
+    interval = setInterval(() => {
+        game();
+        updateTurn();
+    }, refresh); */
+}
+
+/**
+ * Adjusts the velocity of the simulation
+ * @param {HTMLInputElement} range Value of speed
+ */
+function refreshRate(range) {
+    refresh = parseInt(range.value);
 }
 
 /**
@@ -55,9 +256,9 @@ function cellStatusRandom() {
 function clearCell() {
     let CELLS = document.querySelectorAll("td");
     CELLS.forEach(cell => {
-        cell.classList.remove("alive");
-        cell.classList.add("dead");
-        cell.style.backgroundColor = "#eeeeee";
+        if (cell.classList.contains("alive")) {
+            cellStatus(cell);
+        }
     });
 }
 

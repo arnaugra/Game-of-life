@@ -14,8 +14,10 @@
 <body>
     <table></table>
     <div class="container">
+        <div id="turns">0</div>
+            <input type="range" id="range" value="1100" min="100" max="2100" step="250" onchange="refreshRate(this);">
         <div class="grid controls">
-            <input type="button" value="Start">
+            <input type="button" value="Start" onclick="gameStat(this);">
             <input type="button" value="Clear" onclick="clearCell();">
             <input type="button" value="Random" onclick="cellStatusRandom();">
         </div>
