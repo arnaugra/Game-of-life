@@ -72,6 +72,9 @@ function gameStat(button) {
 }
 
 let volta = 0;
+/**
+ * Execution of the simulation
+ */
 function game() {
 
     let boardCells = document.querySelectorAll("td");
