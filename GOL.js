@@ -19,6 +19,7 @@ function board() {
             CELLS[col][row] = "dead";
             td = document.createElement("td");
             td.setAttribute("onclick", "cellStatus(this);");
+            td.setAttribute("onmouseover", "if (window.event.which == 1) cellStatus(this);");
             td.setAttribute("class", "dead");
             td.setAttribute("id", col + "_" + row);
             tr.append(td);
