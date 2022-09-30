@@ -24,3 +24,12 @@ td {
   text-align: center;
   margin: 25px;
 }
+#rangeDiv {
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
+}
+#range {
+  
+  width: 90%;
+}

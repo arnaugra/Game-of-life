@@ -15,7 +15,10 @@
     <table></table>
     <div class="container">
         <div id="turns">0</div>
-            <input type="range" id="range" value="1100" min="100" max="2100" step="250" onchange="refreshRate(this);">
+        <div id="rangeDiv">
+            <span id="rangeSpeed"></span>
+            <input type="range" id="range" value="500" min="100" max="1000" step="50" oninput="refreshRate(this);">
+        </div>
         <div class="grid controls">
             <input type="button" value="Start" onclick="gameStat(this);">
             <input type="button" value="Clear" onclick="clearCell();">

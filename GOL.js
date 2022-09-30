@@ -4,7 +4,7 @@ const NEW_CELLS = new Array(24);
 let CELLS = [];
 let PAUSE = true;
 let interval;
-let refresh = 1100;
+let refresh = document.querySelector("#range").value;
 
 /**
  * Build the board, too lazy to do it, this is faster
@@ -233,11 +233,15 @@ function updateTurn() {
  */
 function refreshRate(range) {
     refresh = parseInt(range.value);
-    window.clearInterval(interval);
-    interval = setInterval(() => {
-        game();
-        updateTurn();
-    }, refresh);
+    document.querySelector("#rangeSpeed").innerHTML = refresh;
+    if (!PAUSE) {
+        window.clearInterval(interval);
+        interval = setInterval(() => {
+            game();
+            updateTurn();
+        }, refresh);
+
+    }
 }
 
 /**
@@ -270,4 +274,5 @@ function clearCell() {
  */
 window.onload = () => {
     board();
+    document.querySelector("#rangeSpeed").innerHTML = refresh
 }
