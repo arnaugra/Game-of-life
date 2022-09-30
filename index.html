@@ -24,6 +24,24 @@
             <input type="button" value="Clear" onclick="clearCell();">
             <input type="button" value="Random" onclick="cellStatusRandom();">
         </div>
+        <br />
+        <details>
+            <summary>Info:</summary>
+            <ul>
+                <li>
+                    Any alive cell with less than 2 neighbours, wil die.
+                </li>
+                <li>
+                    Any alive cell with more than 3 neighbours, will die.
+                </li>
+                <li>
+                    Any alive cell with 2 or 3 neighbours, will still alive the next simulation.
+                </li>
+                <li>
+                    Any dead cell with more exactly 3 neighbours, will revive.
+                </li>
+            </ul>
+        </details>
     </div>
 </body>
 <script src="GOL.js"></script>
