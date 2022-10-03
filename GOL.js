@@ -6,6 +6,8 @@ let PAUSE = true;
 let interval;
 let refresh = document.querySelector("#range").value;
 
+let EASTER_EGG = false;
+
 /**
  * Build the board, too lazy to do it, this is faster
  */
@@ -42,13 +44,28 @@ function cellStatus(cell) {
     if (CELLS[placeArray[0]][placeArray[1]] == "dead") {
         cell.classList.add("alive");
         CELLS[placeArray[0]][placeArray[1]] = "alive";
+        if (EASTER_EGG) {
+            cell.style.background = "rgb(" + colorR();
+        }
 
     } else {
         cell.classList.add("dead");
         CELLS[placeArray[0]][placeArray[1]] = "dead";
 
+        if (EASTER_EGG) {
+            cell.style.background = "#eeeeee";
+        }
     }
 
+}
+
+function colorR() {
+    let actual = "";
+    for (let i = 0; i < 3; i++) {
+        actual += Math.ceil(Math.random() * 255);
+        if (i < 2) actual += ",";
+    }
+    return actual
 }
 
 /**
@@ -277,3 +294,25 @@ window.onload = () => {
     board();
     document.querySelector("#rangeSpeed").innerHTML = refresh
 }
+
+let timeoutOn = false;
+let SECRET_WORD = [];
+window.addEventListener("keydown", (event) => {
+
+    let timerCode;
+    if (!EASTER_EGG && !timeoutOn) {
+        timeoutOn = true;
+        timerCode = setTimeout(() => {
+            if (SECRET_WORD.length == 6 || SECRET_WORD == ["C", "O", "L", "O", "R", "S"]) {
+                EASTER_EGG = true;
+                console.warn("EASTER_EGG: " + EASTER_EGG);
+            } else {
+                SECRET_WORD = [];
+                timeoutOn = false;
+            }
+
+        }, 2000);
+    }
+
+    SECRET_WORD.push(event.key.toUpperCase());
+});
